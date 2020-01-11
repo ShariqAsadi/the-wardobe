@@ -1,0 +1,11 @@
+{
+  "name": "the-wardrobe",
+  "version": "1.0.0",
+  "description": "Backend for The Wardobe",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Shariq Ali Asadi",
+  "license": "ISC"
+}
