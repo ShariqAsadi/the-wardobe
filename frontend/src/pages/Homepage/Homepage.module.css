@@ -11,3 +11,11 @@
   flex-wrap: wrap;
   justify-content: space-between;
 }
+
+@media (max-width: 995px) {
+  .menu {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    grid-auto-flow: dense;
+  }
+}
