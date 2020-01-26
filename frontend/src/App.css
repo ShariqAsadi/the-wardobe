@@ -6,6 +6,8 @@ body {
   font-family: 'Open Sans Condensed';
   padding: 20px 60px;
   background: linear-gradient(to left, #ece9e6, #ffffff);
+  background-repeat: no-repeat;
+  background-attachment: fixed;
 }
 a {
   text-decoration: none;
