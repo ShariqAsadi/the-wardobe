@@ -38,7 +38,15 @@ exports.sign_up = async (req, res, next) => {
 
     //Generate Token
     const token = signToken(newUser);
-    console.log(token);
+    const { $init, ...userDetails } = newUser[newUser.method];
+
+    const { id, register_date } = newUser;
+    const { password: userPassword, ...userWithoutPassword } = userDetails;
+    res.status(200).json({
+      success: true,
+      token: token,
+      user: { ...userWithoutPassword, id, register_date }
+    });
     //Response token
     res.status(200).json({ success: true, token: token });
   } catch (e) {
@@ -49,7 +57,15 @@ exports.sign_up = async (req, res, next) => {
 exports.sign_in = async (req, res, next) => {
   try {
     const token = signToken(req.user);
-    res.status(200).json({ success: true, token: token });
+    const { $init, ...userDetails } = req.user[req.user.method];
+
+    const { id, register_date } = req.user;
+    const { password: userPassword, ...userWithoutPassword } = userDetails;
+    res.status(200).json({
+      success: true,
+      token: token,
+      user: { ...userWithoutPassword, id, register_date }
+    });
   } catch (e) {
     console.log(e);
     res.status(500).json({
@@ -62,7 +78,15 @@ exports.sign_in = async (req, res, next) => {
 exports.google_oauth = async (req, res, next) => {
   try {
     const token = signToken(req.user);
-    res.status(200).json({ success: true, token: token });
+    const { $init, ...userDetails } = req.user[req.user.method];
+
+    const { id, register_date } = req.user;
+    const { password: userPassword, ...userWithoutPassword } = userDetails;
+    res.status(200).json({
+      success: true,
+      token: token,
+      user: { ...userWithoutPassword, id, register_date }
+    });
   } catch (e) {
     console.log(e);
     res.status(500).json({
@@ -75,9 +99,38 @@ exports.google_oauth = async (req, res, next) => {
 exports.facebook_oauth = async (req, res, next) => {
   try {
     const token = signToken(req.user);
-    res.status(200).json({ success: true, token: token });
+    const { $init, ...userDetails } = req.user[req.user.method];
+
+    const { id, register_date } = req.user;
+    const { password: userPassword, ...userWithoutPassword } = userDetails;
+    res.status(200).json({
+      success: true,
+      token: token,
+      user: { ...userWithoutPassword, id, register_date }
+    });
   } catch (e) {
     console.log(e);
+    res.status(500).json({
+      success: false,
+      message: 'Something went wrong. Please try again'
+    });
+  }
+};
+
+exports.session = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.user.id);
+    const { $init, ...userDetails } = user[user.method];
+
+    const { id, register_date } = user;
+    const { password: userPassword, ...userWithoutPassword } = userDetails;
+    res.json({
+      ...userWithoutPassword,
+      id,
+      register_date
+    });
+  } catch (e) {
+    console.log(error);
     res.status(500).json({
       success: false,
       message: 'Something went wrong. Please try again'

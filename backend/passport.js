@@ -2,7 +2,7 @@ const passport = require('passport');
 const JwtStrategy = require('passport-jwt').Strategy;
 const { ExtractJwt } = require('passport-jwt');
 const LocalStrategy = require('passport-local').Strategy;
-const GooglePlusTokenStrategy = require('passport-google-plus-token');
+const GooglePlusTokenStrategy = require('passport-google-token').Strategy;
 const FacebookTokenStrategy = require('passport-facebook-token');
 const User = require('./models/User');
 
@@ -42,7 +42,6 @@ passport.use(
       try {
         //Find the user given the email
         const user = await User.findOne({ 'local.email': email });
-
         //If not, handle it
         if (!user) {
           return done(null, false);
@@ -77,10 +76,8 @@ passport.use(
         //Check whether this current user exists in our DB
         const existingUser = await User.findOne({ 'google.id': profile.id });
         if (existingUser) {
-          console.log('user exist');
           return done(null, existingUser);
         }
-        console.log('user doesn not exist');
         //If new account
         const newUser = new User({
           method: 'google',

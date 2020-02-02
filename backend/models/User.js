@@ -38,6 +38,10 @@ const userSchema = new Schema({
       type: String,
       lowercase: true
     }
+  },
+  register_date: {
+    type: Date,
+    default: Date.now()
   }
 });
 

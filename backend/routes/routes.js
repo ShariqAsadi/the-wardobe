@@ -5,6 +5,7 @@ const passport = require('passport');
 require('../passport');
 
 router.post('/user/register', UsersController.sign_up);
+
 router.post(
   '/user/login',
   passport.authenticate('local', { session: false }),
@@ -27,6 +28,12 @@ router.get(
   '/user/secret',
   passport.authenticate('jwt', { session: false }),
   UsersController.secret
+);
+
+router.get(
+  '/user/session',
+  passport.authenticate('jwt', { session: false }),
+  UsersController.session
 );
 
 module.exports = router;
