@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { register } from '../../redux/actions/authActions';
 import styles from './SignUp.module.css';
 import FormInput from '../FormInput/FormInput';
 import Button from '../Button/Button';
@@ -8,6 +10,10 @@ const SignUp = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+
+  const dispatch = useDispatch();
+
+  const loading = useSelector(state => state.auth.isLoading);
 
   const handleNameChange = event => {
     setName(event.target.value);
@@ -32,7 +38,7 @@ const SignUp = () => {
       return;
     }
     try {
-      //To be implemented
+      dispatch(register(name, email, password));
     } catch (error) {
       console.error(error);
     }
@@ -75,7 +81,9 @@ const SignUp = () => {
           label="Confirm Password"
           required
         />
-        <Button type="submit">SIGN UP</Button>
+        <Button type="submit" loading={loading}>
+          SIGN UP
+        </Button>
       </form>
     </div>
   );

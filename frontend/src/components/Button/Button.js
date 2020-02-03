@@ -1,9 +1,12 @@
 import React from 'react';
 import styles from './Button.module.css';
+import { BeatLoader } from 'react-spinners';
+
 const CustomButton = ({
   children,
   isGoogleSignIn,
   inverted,
+  loading,
   ...otherProps
 }) => (
   <button
@@ -12,7 +15,13 @@ const CustomButton = ({
     } ${styles['custom-button']}`}
     {...otherProps}
   >
-    {children}
+    {loading ? (
+      <>
+        <BeatLoader size={10} color="#FFF" />
+      </>
+    ) : (
+      <>{children}</>
+    )}
   </button>
 );
 

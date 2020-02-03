@@ -44,3 +44,18 @@ export const getUser = () => async (dispatch, getState) => {
     dispatch({ type: AUTH_ERROR });
   }
 };
+
+// Register User
+export const register = (name, email, password) => async dispatch => {
+  try {
+    const body = { name, email, password };
+    dispatch({type: USER_LOADING});
+    let response = await axios.post('/api/user/register', body);
+    dispatch({ type: REGISTER_SUCCESS, payload: response.data });
+  } catch (err) {
+    dispatch(
+      returnErrors(err.response.data, err.response.status, 'REGISTER_FAIL')
+    );
+    dispatch({ type: REGISTER_FAIL });
+  }
+};
