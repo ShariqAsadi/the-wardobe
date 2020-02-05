@@ -1,35 +1,31 @@
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { register } from '../../redux/actions/authActions';
 import styles from './SignUp.module.css';
 import FormInput from '../FormInput/FormInput';
 import Button from '../Button/Button';
+import useInput from '../../hooks/useInput';
+
+const INITIAL_STATE = {
+  name: '',
+  email: '',
+  password: '',
+  confirmPassword: ''
+};
 
 const SignUp = () => {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const { handleChange, values } = useInput(INITIAL_STATE);
+  const { name, email, password, confirmPassword } = values;
 
   const dispatch = useDispatch();
-
   const loading = useSelector(state => state.auth.isLoading);
+  const authenticated = useSelector(state => state.auth.isAuthenticated);
 
-  const handleNameChange = event => {
-    setName(event.target.value);
-  };
-
-  const handleEmailChange = event => {
-    setEmail(event.target.value);
-  };
-
-  const handlePasswordChange = event => {
-    setPassword(event.target.value);
-  };
-
-  const handleConfirmPasswordChange = event => {
-    setConfirmPassword(event.target.value);
-  };
+  useEffect(() => {
+    if (authenticated) {
+      console.log('hi auth');
+    }
+  }, [authenticated]);
 
   const handleSubmit = async event => {
     event.preventDefault();
@@ -53,7 +49,7 @@ const SignUp = () => {
           type="text"
           name="name"
           value={name}
-          onChange={handleNameChange}
+          onChange={handleChange}
           label="Name"
           required
         />
@@ -61,7 +57,7 @@ const SignUp = () => {
           type="email"
           name="email"
           value={email}
-          onChange={handleEmailChange}
+          onChange={handleChange}
           label="Email"
           required
         />
@@ -69,7 +65,7 @@ const SignUp = () => {
           type="password"
           name="password"
           value={password}
-          onChange={handlePasswordChange}
+          onChange={handleChange}
           label="Password"
           required
         />
@@ -77,7 +73,7 @@ const SignUp = () => {
           type="password"
           name="confirmPassword"
           value={confirmPassword}
-          onChange={handleConfirmPasswordChange}
+          onChange={handleChange}
           label="Confirm Password"
           required
         />
