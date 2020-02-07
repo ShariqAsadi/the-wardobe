@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { register } from '../../redux/actions/authActions';
 import styles from './SignUp.module.css';
@@ -19,13 +19,6 @@ const SignUp = () => {
 
   const dispatch = useDispatch();
   const loading = useSelector(state => state.auth.isLoading);
-  const authenticated = useSelector(state => state.auth.isAuthenticated);
-
-  useEffect(() => {
-    if (authenticated) {
-      console.log('hi auth');
-    }
-  }, [authenticated]);
 
   const handleSubmit = async event => {
     event.preventDefault();

@@ -49,7 +49,7 @@ export const getUser = () => async (dispatch, getState) => {
 export const register = (name, email, password) => async dispatch => {
   try {
     const body = { name, email, password };
-    dispatch({type: USER_LOADING});
+    dispatch({ type: USER_LOADING });
     let response = await axios.post('/api/user/register', body);
     dispatch({ type: REGISTER_SUCCESS, payload: response.data });
   } catch (err) {
@@ -58,4 +58,64 @@ export const register = (name, email, password) => async dispatch => {
     );
     dispatch({ type: REGISTER_FAIL });
   }
+};
+
+// Login User
+export const login = (email, password) => async dispatch => {
+  try {
+    const body = { email, password };
+    dispatch({ type: USER_LOADING });
+    let response = await axios.post('/api/user/login', body);
+    dispatch({ type: LOGIN_SUCCESS, payload: response.data });
+  } catch (err) {
+    dispatch(
+      returnErrors(err.response.data, err.response.status, 'LOGIN_FAIL')
+    );
+    dispatch({ type: LOGIN_FAIL });
+  }
+};
+
+//Login with Google
+export const oauthGoogle = token => async dispatch => {
+  try {
+    let body = {
+      access_token: token
+    };
+    dispatch({ type: USER_LOADING });
+    let response = await axios.post('/api/user/oauth/google', body);
+    dispatch({ type: LOGIN_SUCCESS, payload: response.data });
+  } catch (err) {
+    dispatch(
+      returnErrors(err.response.data, err.response.status, 'GOOGLE_LOGIN_FAIL')
+    );
+    dispatch({ type: LOGIN_FAIL });
+  }
+};
+
+//Login with Facebook
+export const oauthFacebook = token => async dispatch => {
+  try {
+    let body = {
+      access_token: token
+    };
+    dispatch({ type: USER_LOADING });
+    let response = await axios.post('/api/user/oauth/facebook', body);
+    dispatch({ type: LOGIN_SUCCESS, payload: response.data });
+  } catch (err) {
+    dispatch(
+      returnErrors(
+        err.response.data,
+        err.response.status,
+        'FACEBOOK_LOGIN_FAIL'
+      )
+    );
+    dispatch({ type: LOGIN_FAIL });
+  }
+};
+
+//Logout User
+export const logout = () => {
+  return {
+    type: LOGOUT_SUCCESS
+  };
 };
