@@ -47,8 +47,6 @@ exports.sign_up = async (req, res, next) => {
       token: token,
       user: { ...userWithoutPassword, id, register_date }
     });
-    //Response token
-    res.status(200).json({ success: true, token: token });
   } catch (e) {
     console.log('error: ', e);
   }
