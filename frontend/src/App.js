@@ -7,22 +7,24 @@ import './App.css';
 import Header from './components/Header/Header';
 import HomePage from './pages/Homepage/Homepage';
 import SignInAndSignUp from './pages/SignInAndSignUp/SignInAndSignUp';
+import { ToastProvider } from 'react-toast-notifications';
 
 function App() {
-
   useEffect(() => {
     store.dispatch(getUser());
-  }, [])
+  }, []);
 
   return (
     <Provider store={store}>
-      <div>
-        <Header />
-        <Switch>
-          <Route exact path="/" component={HomePage} />
-          <Route exact path="/login" component={SignInAndSignUp} />
-        </Switch>
-      </div>
+      <ToastProvider autoDismissTimeout={1500}>
+        <div>
+          <Header />
+          <Switch>
+            <Route exact path="/" component={HomePage} />
+            <Route exact path="/login" component={SignInAndSignUp} />
+          </Switch>
+        </div>
+      </ToastProvider>
     </Provider>
   );
 }

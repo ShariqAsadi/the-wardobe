@@ -1,10 +1,11 @@
 import React from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { register } from '../../redux/actions/authActions';
 import styles from './SignUp.module.css';
 import FormInput from '../FormInput/FormInput';
 import Button from '../Button/Button';
 import useInput from '../../hooks/useInput';
+import { useToasts } from 'react-toast-notifications';
 
 const INITIAL_STATE = {
   name: '',
@@ -16,21 +17,19 @@ const INITIAL_STATE = {
 const SignUp = () => {
   const { handleChange, values } = useInput(INITIAL_STATE);
   const { name, email, password, confirmPassword } = values;
-
   const dispatch = useDispatch();
-  const loading = useSelector(state => state.auth.isLoading);
+  const { addToast } = useToasts();
 
   const handleSubmit = async event => {
     event.preventDefault();
     if (password !== confirmPassword) {
-      alert(`Passwords don't match`);
+      addToast('Passwords do not match!', {
+        appearance: 'error',
+        autoDismiss: true
+      });
       return;
     }
-    try {
-      dispatch(register(name, email, password));
-    } catch (error) {
-      console.error(error);
-    }
+    dispatch(register(name, email, password));
   };
 
   return (
@@ -70,9 +69,7 @@ const SignUp = () => {
           label="Confirm Password"
           required
         />
-        <Button type="submit" loading={loading}>
-          SIGN UP
-        </Button>
+        <Button type="submit">SIGN UP</Button>
       </form>
     </div>
   );

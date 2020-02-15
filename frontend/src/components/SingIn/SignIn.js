@@ -1,5 +1,5 @@
 import React from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import styles from './SignIn.module.css';
 import FormInput from '../FormInput/FormInput';
 import Button from '../Button/Button';
@@ -21,24 +21,17 @@ const SignIn = () => {
   const { handleChange, values } = useInput(INITIAL_STATE);
   const { email, password } = values;
   const dispatch = useDispatch();
-  const loading = useSelector(state => state.auth.isLoading);
 
   const responseGoogle = res => {
     dispatch(oauthGoogle(res.accessToken));
-    console.log(res);
   };
   const responseFacebook = res => {
     dispatch(oauthFacebook(res.accessToken));
-    console.log(res);
   };
 
   const handleSubmit = async e => {
     e.preventDefault();
-    try {
-      dispatch(login(email, password));
-    } catch (err) {
-      console.log(err);
-    }
+    dispatch(login(email, password));
   };
 
   return (
@@ -63,9 +56,7 @@ const SignIn = () => {
           label="Password"
         />
         <div className={styles.buttons}>
-          <Button type="submit" loading={loading}>
-            Sign In
-          </Button>
+          <Button type="submit">Sign In</Button>
           <GoogleLogin
             clientId="664346966163-6e2crrba13f0hg9hh5h3m5u50ipas4ed.apps.googleusercontent.com"
             buttonText="Login with Google"
