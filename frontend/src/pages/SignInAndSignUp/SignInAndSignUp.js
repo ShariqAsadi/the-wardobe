@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { clearErrors } from '../../redux/actions/errorActions';
 import styles from './SignInAndSignUp.module.css';
 import SignIn from '../../components/SingIn/SignIn';
 import SignUp from '../../components/SignUp/SignUp';
@@ -13,12 +14,16 @@ const SignInAndSignUp = () => {
   const error = useSelector(state => state.error);
   const history = useHistory();
   const { addToast } = useToasts();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (authenticated) {
       history.push('/');
     }
-  }, [authenticated, history]);
+    return () => {
+      dispatch(clearErrors());
+    };
+  }, [authenticated, history, dispatch]);
 
   useEffect(() => {
     if (error.msg && error.id) {
