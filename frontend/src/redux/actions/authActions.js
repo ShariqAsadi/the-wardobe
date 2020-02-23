@@ -40,7 +40,7 @@ export const getUser = () => async (dispatch, getState) => {
     let response = await axios.get('/api/user/session', setupConfig(getState));
     dispatch({ type: USER_LOADED, payload: response.data });
   } catch (err) {
-    dispatch(returnErrors(err.response.data, err.response.status));
+    dispatch(returnErrors(err.response?.data, err.response?.status));
     dispatch({ type: AUTH_ERROR });
   }
 };

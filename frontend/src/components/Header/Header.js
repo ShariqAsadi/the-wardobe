@@ -27,9 +27,6 @@ const Header = () => {
         <Link className={styles.option} to="/shop">
           SHOP
         </Link>
-        {/* <Link className={styles.option} to="/shop">
-          CONTACT
-        </Link> */}
         {authenticated ? (
           <div className={styles.option} onClick={logoutUser}>
             SIGN OUT

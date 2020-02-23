@@ -8,6 +8,7 @@ import Header from './components/Header/Header';
 import HomePage from './pages/Homepage/Homepage';
 import SignInAndSignUp from './pages/SignInAndSignUp/SignInAndSignUp';
 import { ToastProvider } from 'react-toast-notifications';
+import Shop from './pages/Shop/Shop';
 
 function App() {
   useEffect(() => {
@@ -22,6 +23,7 @@ function App() {
           <Switch>
             <Route exact path="/" component={HomePage} />
             <Route exact path="/login" component={SignInAndSignUp} />
+            <Route exact path="/shop" component={Shop} />
           </Switch>
         </div>
       </ToastProvider>
