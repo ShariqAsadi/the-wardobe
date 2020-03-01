@@ -1,5 +1,6 @@
 import React from 'react';
 import styles from './ProductItem.module.css';
+import Button from '../Button/Button';
 
 const ProductItem = ({ id, name, price, imageUrl }) => {
   return (
@@ -13,6 +14,9 @@ const ProductItem = ({ id, name, price, imageUrl }) => {
       <div className={styles.productFooter}>
         <span className={styles.name}>{name}</span>
         <span className={styles.price}>${price}</span>
+      </div>
+      <div className={styles.customButton}>
+        <Button inverted>Add to Cart</Button>
       </div>
     </div>
   );
