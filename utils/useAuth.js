@@ -16,11 +16,11 @@ function AuthProvider({ children }) {
     const unsubscribe = firebase.auth().onIdTokenChanged(async rawUser => {
       if (!rawUser) {
         setUser(null);
-        nookies.set(undefined, 'token', '', {});
+        nookies.set(null, 'token', '', {});
       } else {
-        const token = rawUser.getIdToken();
+        const token = await rawUser.getIdToken();
         setUser(rawUser);
-        nookies.set(undefined, 'token', token, {});
+        nookies.set(null, 'token', token, {});
       }
     });
 

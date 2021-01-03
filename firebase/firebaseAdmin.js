@@ -6,9 +6,9 @@ export const verifyIdToken = token => {
   if (!admin.apps.length) {
     admin.initializeApp({
       credential: admin.credential.cert({
-        projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
-        clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
-        privateKey: firebasePrivateKey.replace(/\\n/g, '\n'),
+        project_id: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
+        client_email: process.env.FIREBASE_CLIENT_EMAIL,
+        private_key: firebasePrivateKey.replace(/\\n/g, '\n'),
       }),
     });
   }
