@@ -3,6 +3,7 @@ import Router from 'next/router';
 import nookies from 'nookies';
 import firebase from '../firebase/firebaseClient';
 import { createUser } from '../firebase/db';
+import { APP_TOKEN } from './constants';
 
 const AuthContext = createContext();
 
@@ -18,13 +19,13 @@ function AuthProvider({ children }) {
     const unsubscribe = firebase.auth().onIdTokenChanged(async rawUser => {
       if (!rawUser) {
         setUser(null);
-        nookies.set(null, 'the-wardrobe-token', '', {});
+        nookies.set(null, APP_TOKEN, '', {});
       } else {
         const formattedUser = await formatUser(rawUser);
         const { token, ...otherUserDetails } = formattedUser;
         createUser(formattedUser.uid, otherUserDetails);
         setUser(formattedUser);
-        nookies.set(null, 'the-wardrobe-token', token, {});
+        nookies.set(null, APP_TOKEN, token, {});
       }
     });
 
