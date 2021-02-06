@@ -8,13 +8,11 @@ export default function Login() {
 
   const handleSignin = e => {
     e.preventDefault();
-    console.log('coems here?');
     signinWithEmail(email, password);
   };
 
   const handleSignup = e => {
     e.preventDefault();
-    console.log('coems here?');
     signupWithEmail(email, password);
   };
 

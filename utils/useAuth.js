@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext, createContext } from 'react';
 import Router from 'next/router';
 import nookies from 'nookies';
 import firebase from '../firebase/firebaseClient';
+import { createUser } from '../firebase/db';
 
 const AuthContext = createContext();
 
@@ -11,16 +12,19 @@ const useAuth = () => {
 
 function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const unsubscribe = firebase.auth().onIdTokenChanged(async rawUser => {
       if (!rawUser) {
         setUser(null);
-        nookies.set(null, 'token', '', {});
+        nookies.set(null, 'the-wardrobe-token', '', {});
       } else {
-        const token = await rawUser.getIdToken();
-        setUser(rawUser);
-        nookies.set(null, 'token', token, {});
+        const formattedUser = await formatUser(rawUser);
+        const { token, ...otherUserDetails } = formattedUser;
+        createUser(formattedUser.uid, otherUserDetails);
+        setUser(formattedUser);
+        nookies.set(null, 'the-wardrobe-token', token, {});
       }
     });
 
@@ -28,57 +32,73 @@ function AuthProvider({ children }) {
   }, []);
 
   const signinWithEmail = (email, password) => {
-    // setLoading(true);
+    setLoading(true);
     return firebase
       .auth()
       .signInWithEmailAndPassword(email, password)
       .then(response => {
-        console.log(response.user);
-        // handleUser(response.user);
+        setLoading(false);
         Router.push('/');
       });
   };
 
   const signupWithEmail = (email, password) => {
-    // setLoading(true);
+    setLoading(true);
     return firebase
       .auth()
       .createUserWithEmailAndPassword(email, password)
       .then(response => {
-        console.log(response.user);
-        // handleUser(response.user);
+        setLoading(false);
         Router.push('/');
       });
   };
 
   const signinWithGoogle = redirect => {
-    // setLoading(true);
+    setLoading(true);
     return firebase
       .auth()
       .signInWithPopup(new firebase.auth.GoogleAuthProvider())
       .then(response => {
-        // handleUser(response.user);
-        // if (redirect) {
-        //   Router.push(redirect);
-        // }
+        setLoading(false);
         Router.push('/');
       });
   };
 
   const signout = () => {
-    Router.push('/');
-
-    return firebase.auth().signOut();
-    // .then(() => handleUser(false));
+    return firebase
+      .auth()
+      .signOut()
+      .then(() => {
+        Router.push('/');
+      });
   };
 
   return (
     <AuthContext.Provider
-      value={{ user, signinWithEmail, signinWithGoogle, signupWithEmail, signout }}
+      value={{
+        user,
+        signinWithEmail,
+        signinWithGoogle,
+        signupWithEmail,
+        signout,
+        loading,
+      }}
     >
       {children}
     </AuthContext.Provider>
   );
 }
+
+const formatUser = async rawUser => {
+  const token = await rawUser.getIdToken();
+  return {
+    uid: rawUser.uid,
+    email: rawUser.email,
+    name: rawUser.displayName,
+    provider: rawUser.providerData[0].providerId,
+    photoUrl: rawUser.photoURL,
+    token,
+  };
+};
 
 export { useAuth, AuthProvider };
