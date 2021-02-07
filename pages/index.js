@@ -2,6 +2,7 @@ import { useAuth } from '../utils/useAuth';
 import { verifyIdToken } from '../firebase/firebaseAdmin';
 import nookies from 'nookies';
 import { APP_TOKEN } from '../utils/constants';
+import { Box } from '@chakra-ui/react';
 
 export default function Home({ userDetails }) {
   const { user, signout } = useAuth();
@@ -11,7 +12,7 @@ export default function Home({ userDetails }) {
   };
 
   return (
-    <div>
+    <Box bg='tomato'>
       Hello
       <div>
         {userDetails?.email
@@ -19,7 +20,7 @@ export default function Home({ userDetails }) {
           : 'No user'}
       </div>
       {userDetails?.email && <button onClick={handleLogout}>Logout</button>}
-    </div>
+    </Box>
   );
 }
 
