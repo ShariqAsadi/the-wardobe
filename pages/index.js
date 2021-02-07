@@ -3,6 +3,7 @@ import { verifyIdToken } from '../firebase/firebaseAdmin';
 import nookies from 'nookies';
 import { APP_TOKEN } from '../utils/constants';
 import { Box } from '@chakra-ui/react';
+import Navbar from '../components/Navbar';
 
 export default function Home({ userDetails }) {
   const { user, signout } = useAuth();
@@ -12,15 +13,9 @@ export default function Home({ userDetails }) {
   };
 
   return (
-    <Box bg='tomato'>
-      Hello
-      <div>
-        {userDetails?.email
-          ? `Email: ${userDetails.email} and UID: ${userDetails.uid}`
-          : 'No user'}
-      </div>
-      {userDetails?.email && <button onClick={handleLogout}>Logout</button>}
-    </Box>
+    <>
+      <Navbar />
+    </>
   );
 }
 
